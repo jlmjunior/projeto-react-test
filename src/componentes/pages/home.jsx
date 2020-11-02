@@ -1,10 +1,12 @@
 import React from 'react'
 
+import Container from '../corpo/Container'
+
 const home = () => {
   return (
-    <div>
-      
-    </div>
+    <Container>
+
+    </Container>
   )
 }
 

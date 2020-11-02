@@ -2,6 +2,8 @@ import React from 'react'
 import {AppBar, Toolbar, Typography, makeStyles, IconButton, Button, Hidden, ThemeProvider, createMuiTheme} from '@material-ui/core'
 import Modal from '../login/Modal'
 
+import { Link } from "react-router-dom";
+
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home';
 import WorkIcon from '@material-ui/icons/Work';
@@ -75,17 +77,27 @@ export const Navbar = (props) => {
             <Hidden smDown>
               <span className={classes.menuItems}>
                 <ThemeProvider theme={custom}>
-                  <Button variant="text" color="inherit" startIcon={<HomeIcon />}>Home</Button>
-                  <Button variant="text" color="inherit" startIcon={<WorkIcon />}>Vagas</Button>
-                  <Button variant="text" color="inherit" startIcon={<InfoIcon />}>Sobre</Button>
+                  <Button component={ Link } to="/" variant="text" color="inherit" startIcon={<HomeIcon />}>Home</Button>
+                  <Button component={ Link } to="/vagas" variant="text" color="inherit" startIcon={<WorkIcon />}>Vagas</Button>
+                  <Button component={ Link } to="/sobre" variant="text" color="inherit" startIcon={<InfoIcon />}>Sobre</Button>
                 </ThemeProvider>
               </span>
             </Hidden>
           </Typography>
 
-          <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
-            Login
-          </Button>
+          {
+            localStorage.getItem('userconfig') ?
+            (
+              <>
+                {JSON.parse(localStorage.getItem('userconfig')).user.username}
+              </>
+            ) : (
+              <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
+                Login
+              </Button>
+            )
+          }
+
 
         </Toolbar>
 

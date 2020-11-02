@@ -16,7 +16,7 @@ const estilos = makeStyles(theme => ({
   },
 }))
 
-const Container = () => {
+const Container = ({children}) => {
 
   const classes = estilos()
   const [abrir, setAbrir] = React.useState(false)
@@ -37,6 +37,9 @@ const Container = () => {
       
       <div className={classes.content}>
         <div className={classes.toolbar}></div>
+
+        {children}
+
       </div>
     </div>
   )
