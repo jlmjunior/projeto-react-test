@@ -3,7 +3,7 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentT
 import { makeStyles } from '@material-ui/core/styles';
 import { ThemeContext } from '../../context/GlobalContext'
 import * as Api from '../../Util/Api/LoginApi'
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +21,7 @@ const Modal = (props) => {
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  
+
   const [error, setError] = React.useState('');
   const [alert, setAlert] = React.useState(false);
 
@@ -51,7 +51,7 @@ const Modal = (props) => {
     <div>
       <div className={classes.root}>
         <Snackbar open={alert} autoHideDuration={6000} onClose={alertClose}>
-          <MuiAlert onClose={alertClose} severity={'error'} elevation={6} variant="filled">{error}</MuiAlert>
+          <Alert onClose={alertClose} severity={'error'} elevation={2} variant="filled">{error}</Alert>
         </Snackbar>
       </div>
 

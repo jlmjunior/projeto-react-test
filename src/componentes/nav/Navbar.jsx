@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home';
 import WorkIcon from '@material-ui/icons/Work';
 import InfoIcon from '@material-ui/icons/Info';
+import LoginMenu from '../login/LoginMenu';
 
 //const drawerWidth = 240
 
@@ -90,9 +91,7 @@ export const Navbar = (props) => {
           {
             localStorage.getItem('userconfig') ?
               (
-                <>
-                  {JSON.parse(localStorage.getItem('userconfig')).userInfo.user}
-                </>
+                <LoginMenu user={JSON.parse(localStorage.getItem('userconfig')).userInfo.user} />
               ) : (
                 <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
                   Login
