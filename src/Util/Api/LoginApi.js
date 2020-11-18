@@ -8,7 +8,7 @@ export const Auth = async (username, password) => {
       password: password
   }
 
-  try{
+  try {
     await axios.post(link, data, {
 
       headers: {
@@ -16,14 +16,14 @@ export const Auth = async (username, password) => {
       }
 
     }).then(function (response) {
-
       localStorage.setItem('userconfig', JSON.stringify(response.data))
-
     });
     
   } 
   catch (ex) {
-    return ex;
+    return ex.response.status;
   }
+
+  return 200;
 
 }

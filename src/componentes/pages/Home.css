@@ -1,0 +1,15 @@
+.cover {
+  background-image: url("../../img/job.jpg");
+  background-size: cover;
+  padding: 200px 0;
+  box-shadow: 1px 1px 3px #000000;
+}
+
+.cover-b {
+  text-align: center;
+  color: #fff;
+}
+
+body {
+  color: #313131;
+}

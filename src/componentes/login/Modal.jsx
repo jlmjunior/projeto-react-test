@@ -1,14 +1,9 @@
 import React from 'react'
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { ThemeContext } from '../../context/GlobalContext'
 import * as Api from '../../Util/Api/LoginApi'
-
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,21 +15,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Modal = (props) => {
-
   const classes = useStyles()
+
+  const {loading, setLoading} = React.useContext(ThemeContext)
 
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [erro, setErro] = React.useState('');
+  
+  const [error, setError] = React.useState('');
+  const [alert, setAlert] = React.useState(false);
+
+  const alertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setAlert(false);
+  };
 
   const logar = async () => {
-    let resposta = await Api.Auth(username, password)
+    props.onClose()
+    setLoading(true)
+    let response = await Api.Auth(username, password)
 
-    console.log(resposta)
+    console.log(response)
+    setLoading(false)
+
+    if (response === 401) {
+      setError('Usuário ou senha incorreto')
+      setAlert(true)
+    } 
   }
 
   return (
     <div>
+      <div className={classes.root}>
+        <Snackbar open={alert} autoHideDuration={6000} onClose={alertClose}>
+          <MuiAlert onClose={alertClose} severity={'error'} elevation={6} variant="filled">{error}</MuiAlert>
+        </Snackbar>
+      </div>
+
       <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>

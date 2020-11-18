@@ -1,5 +1,5 @@
 import React from 'react'
-import {AppBar, Toolbar, Typography, makeStyles, IconButton, Button, Hidden, ThemeProvider, createMuiTheme} from '@material-ui/core'
+import { AppBar, Toolbar, Typography, makeStyles, IconButton, Button, Hidden, ThemeProvider, createMuiTheme, Container } from '@material-ui/core'
 import Modal from '../login/Modal'
 
 import { Link } from "react-router-dom";
@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
   },
   menuItems: {
     marginLeft: theme.spacing(5),
+  },
+  customBar: {
+    backgroundColor: 'transparent',
   }
 }))
 
@@ -57,14 +60,13 @@ export const Navbar = (props) => {
 
   return (
     <div>
-      <AppBar className={classes.appBar}>
-
+      <AppBar className={classes.customBar} elevation={0}>
         <Toolbar>
 
           <Hidden mdUp>
-            <IconButton 
-              color="inherit" 
-              aria-label="menu" 
+            <IconButton
+              color="inherit"
+              aria-label="menu"
               className={classes.menuButton}
               onClick={() => props.acaoAbrir()}
             >
@@ -77,9 +79,9 @@ export const Navbar = (props) => {
             <Hidden smDown>
               <span className={classes.menuItems}>
                 <ThemeProvider theme={custom}>
-                  <Button component={ Link } to="/" variant="text" color="inherit" startIcon={<HomeIcon />}>Home</Button>
-                  <Button component={ Link } to="/vagas" variant="text" color="inherit" startIcon={<WorkIcon />}>Vagas</Button>
-                  <Button component={ Link } to="/sobre" variant="text" color="inherit" startIcon={<InfoIcon />}>Sobre</Button>
+                  <Button component={Link} to="/" variant="text" color="inherit" startIcon={<HomeIcon />}>Home</Button>
+                  <Button component={Link} to="/vagas" variant="text" color="inherit" startIcon={<WorkIcon />}>Vagas</Button>
+                  <Button component={Link} to="/sobre" variant="text" color="inherit" startIcon={<InfoIcon />}>Sobre</Button>
                 </ThemeProvider>
               </span>
             </Hidden>
@@ -87,20 +89,19 @@ export const Navbar = (props) => {
 
           {
             localStorage.getItem('userconfig') ?
-            (
-              <>
-                {JSON.parse(localStorage.getItem('userconfig')).user.username}
-              </>
-            ) : (
-              <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
-                Login
-              </Button>
-            )
+              (
+                <>
+                  {JSON.parse(localStorage.getItem('userconfig')).userInfo.user}
+                </>
+              ) : (
+                <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
+                  Login
+                </Button>
+              )
           }
 
 
         </Toolbar>
-
       </AppBar>
 
       <Modal onClose={acaoFecharModal} open={modal} />
