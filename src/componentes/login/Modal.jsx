@@ -1,29 +1,17 @@
 import React from 'react'
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ThemeContext } from '../../context/GlobalContext'
-import * as Api from '../../Util/Api/LoginApi'
+import { Dialog, Paper, Snackbar, Tab, Tabs, Box, Typography, Grid } from '@material-ui/core';
+import Login from './Login';
 import Alert from '@material-ui/lab/Alert';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-      width: '47%',
-    },
-  },
-}));
+import SignIn from './SignIn';
 
 const Modal = (props) => {
-  const classes = useStyles()
-
-  const {loading, setLoading} = React.useContext(ThemeContext)
-
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
   const [error, setError] = React.useState('');
   const [alert, setAlert] = React.useState(false);
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const alertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -33,59 +21,30 @@ const Modal = (props) => {
     setAlert(false);
   };
 
-  const logar = async () => {
-    props.onClose()
-    setLoading(true)
-    let response = await Api.Auth(username, password)
-
-    console.log(response)
-    setLoading(false)
-
-    if (response === 401) {
-      setError('Usuário ou senha incorreto')
-      setAlert(true)
-    } 
-  }
-
   return (
     <div>
-      <div className={classes.root}>
+      <div>
         <Snackbar open={alert} autoHideDuration={6000} onClose={alertClose}>
           <Alert onClose={alertClose} severity={'error'} elevation={2} variant="filled">{error}</Alert>
         </Snackbar>
       </div>
 
       <Dialog open={props.open} onClose={props.onClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Login</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText>
-          <form className={classes.root} noValidate autoComplete="off">
-            <TextField
-              autoFocus
-              id="user"
-              label="Username"
-              type="email"
-              onChange={ (e) => setUsername(e.target.value) }
-            />
-            <TextField
-              id="pass"
-              label="Senha"
-              type="password"
-              onChange={ (e) => setPassword(e.target.value) }
-            />
-        </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => props.onClose()} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={() => logar()} color="primary">
-            Entrar
-          </Button>
-        </DialogActions>
+        <Paper square>
+          <Tabs value={value} indicatorColor="primary" textColor="primary" onChange={handleChange} aria-label="menu de abas">
+            <Tab label="Entrar" />
+            <Tab label="Cadastrar" />
+          </Tabs>
+        </Paper>
+        {
+          value === 0 ?
+          (
+            <Login onClose={props.onClose} setError={setError} setAlert={setAlert}/>
+          ) :
+          (
+            <SignIn />
+          )
+        }
       </Dialog>
     </div>
   )

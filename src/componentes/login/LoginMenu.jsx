@@ -1,6 +1,7 @@
 import React from 'react'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { Button, Popper, Grow, Paper, MenuList, MenuItem, ClickAwayListener, makeStyles, Divider } from '@material-ui/core';
+import { ThemeContext } from '../../context/GlobalContext'
 
 const options = ['Perfil', 'Configuração', 'Logout'];
 
@@ -16,6 +17,9 @@ const LoginMenu = (props) => {
   const anchorRef = React.useRef(null);
   const [open, setOpen] = React.useState(false);
 
+  const {setUserConfig} = React.useContext(ThemeContext)
+  const {loading, setLoading} = React.useContext(ThemeContext)
+
   const openClose = () => {
     setOpen(!open);
   };
@@ -27,6 +31,13 @@ const LoginMenu = (props) => {
 
     setOpen(false);
   };
+
+  const Logout = () => {
+    setLoading(true)
+    localStorage.removeItem('userconfig')
+    setUserConfig(null)
+    setLoading(false)
+  }
 
   return (
     <div>
@@ -57,18 +68,20 @@ const LoginMenu = (props) => {
                   {options.map((option, index) => {
                     if (index === 2)
                       return (
-                        <>
+                        <span key={index}>
                           <Divider />
-                          <MenuItem key={index} onClick={openClose}>
+                          <MenuItem onClick={Logout}>
                             {option}
                           </MenuItem>
-                        </>
+                        </span>
                       )
                     else
                       return (
-                        <MenuItem key={index} onClick={openClose}>
-                          {option}
-                        </MenuItem>
+                        <span key={index}>
+                          <MenuItem onClick={close}>
+                            {option}
+                          </MenuItem>
+                        </span>
                       )
                   })}
                 </MenuList>

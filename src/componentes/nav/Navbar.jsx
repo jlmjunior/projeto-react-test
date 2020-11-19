@@ -1,9 +1,8 @@
 import React from 'react'
 import { AppBar, Toolbar, Typography, makeStyles, IconButton, Button, Hidden, ThemeProvider, createMuiTheme, Container } from '@material-ui/core'
 import Modal from '../login/Modal'
-
+import { ThemeContext } from '../../context/GlobalContext'
 import { Link } from "react-router-dom";
-
 import MenuIcon from '@material-ui/icons/Menu'
 import HomeIcon from '@material-ui/icons/Home';
 import WorkIcon from '@material-ui/icons/Work';
@@ -51,6 +50,8 @@ export const Navbar = (props) => {
   const classes = useStyles()
   const [modal, abrirModal] = React.useState(false);
 
+  const { userConfig, setUserConfig } = React.useContext(ThemeContext)
+
   const acaoAbrirModal = () => {
     abrirModal(true)
   }
@@ -58,6 +59,13 @@ export const Navbar = (props) => {
   const acaoFecharModal = () => {
     abrirModal(false)
   }
+
+  React.useEffect(() => {
+    const userConfiguration = JSON.parse(localStorage.getItem('userconfig'))
+    
+    if (userConfiguration)
+      setUserConfig(userConfiguration)
+  }, [])
 
   return (
     <div>
@@ -89,9 +97,9 @@ export const Navbar = (props) => {
           </Typography>
 
           {
-            localStorage.getItem('userconfig') ?
+            userConfig ?
               (
-                <LoginMenu user={JSON.parse(localStorage.getItem('userconfig')).userInfo.user} />
+                <LoginMenu user={userConfig.userInfo.user} />
               ) : (
                 <Button variant="text" color="inherit" onClick={() => acaoAbrirModal()}>
                   Login
