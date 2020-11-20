@@ -42,7 +42,7 @@ const Modal = (props) => {
             <Login onClose={props.onClose} setError={setError} setAlert={setAlert}/>
           ) :
           (
-            <SignIn />
+            <SignIn onClose={props.onClose} />
           )
         }
       </Dialog>
